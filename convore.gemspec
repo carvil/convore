@@ -3,14 +3,14 @@ $:.push File.expand_path("../lib", __FILE__)
 require "convore/version"
 
 Gem::Specification.new do |s|
-  s.name        = "convore"
+  s.name        = "em-convore"
   s.version     = Convore::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Carlos Vilhena"]
   s.email       = ["carlosvilhena@gmail.com"]
   s.homepage    = "http://carvil.github.com"
   s.summary     = %q{A convore.com API implementation in ruby using EM}
-  s.description = %q{}
+  s.description = %q{A convore.com API implementation in ruby using EM}
 
   # s.rubyforge_project = "convore"
 

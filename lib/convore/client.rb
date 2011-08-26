@@ -14,7 +14,11 @@ module Convore
       http = EM::HttpRequest.new("https://convore.com/api/live.json?cursor=#{@cursor if @cursor}").get :head => {'authorization' => ["#{@username}", "#{@password}"]}
 
       http.callback {
-        process_response(http.response)
+        begin
+          process_response(http.response)
+        rescue Error => e
+          puts "em-convore client: an error occured - #{e}"
+        end
       }
 
       http.errback  {
