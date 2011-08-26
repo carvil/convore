@@ -1,4 +1,6 @@
 require 'yaml'
+require 'eventmachine'
+require 'em-http-request'
 module Convore
 	class Client
 		attr_accessor :thread, :stream, :cursor, :username, :password
@@ -11,16 +13,12 @@ module Convore
 		def listen
 			raise Exception.new("username and password need to be set to listen to /live") if !username || !password
 
-			@thread = Thread.fork {
-				Net::HTTP.start('convore.com', 443, nil, nil, nil, nil, {:use_ssl => true}) {|http|
-					req = Net::HTTP::Get.new("/api/live.json?cursor=#{@cursor if @cursor}")
-					req.basic_auth(username, password)
-					req.set_content_type('application/json')
-					response = http.request(req)
-					
-					Thread.current[:response] = response.body
-				}
-			}
+      http = EM::HttpRequest.new("https://convore.com/api/live.json?cursor=#{@cursor if @cursor}").get :head => {'authorization' => ["#{@username}", "#{@password}"]}
+
+      http.callback {
+        process_response(http.response)
+      }
+
 		end
 
 		def process_response(response)
@@ -44,11 +42,5 @@ module Convore
 			end
 		end
 		
-		def poll(wait = 0.05)
-			if t = @thread.join(wait)
-				listen unless @thread.alive?
-				process_response(t[:response])
-			end				
-		end
 	end
 end

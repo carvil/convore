@@ -8,6 +8,7 @@ module Convore
 
 		
 		def method_missing(method, *args)
+      @attributes = {} if @attributes.nil?
 			if method.match(/\=/)
 				@attributes[method.to_s.gsub(/\=$/, '').to_sym] = args.first
 				return true
@@ -32,7 +33,7 @@ module Convore
 			def from_json(json)
 				return nil if !json
 
-				object = new
+				object = new(@username, @password)
 				json.each {|key, val|
 					key_class = get_class(key)
 
