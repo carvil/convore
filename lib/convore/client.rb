@@ -1,6 +1,4 @@
 require 'yaml'
-require 'eventmachine'
-require 'em-http-request'
 module Convore
 	class Client
 		attr_accessor :thread, :stream, :cursor, :username, :password
@@ -17,6 +15,9 @@ module Convore
 
       http.callback {
         process_response(http.response)
+      }
+
+      http.errback  {
       }
 
 		end

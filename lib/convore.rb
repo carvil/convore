@@ -1,5 +1,7 @@
 require 'net/http'
 require 'json'
+require 'eventmachine'
+require 'em-http-request'
 
 module Convore
 end
