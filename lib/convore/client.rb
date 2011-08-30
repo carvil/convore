@@ -16,7 +16,7 @@ module Convore
       http.callback {
         begin
           process_response(http.response)
-        rescue Error => e
+        rescue Exception => e
           puts "em-convore client: an error occured - #{e}"
         end
       }
